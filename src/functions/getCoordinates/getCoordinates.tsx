@@ -7,7 +7,8 @@ export interface IUnionCoordinates {
 
 export const getCoordinates = <T,>(
   scaledSequence: T[],
-  mathRect: IMRect
+  mathRect: IMRect,
+  realRect: IMRect
 ): (T & IUnionCoordinates)[] => {
   const { height, width, xOffset, yOffset } = getHumanRect(mathRect);
   const sumOfAreas = getSumBy(scaledSequence, "scaledValue");
@@ -18,19 +19,47 @@ export const getCoordinates = <T,>(
   let mutatedYOffset = yOffset;
   let mutatedXOffset = xOffset;
   const coor = scaledSequence.map((item) => {
-    const y1 =
-      width >= height
-        ? mutatedYOffset + (item as IScaledValue).scaledValue / areaWidth
-        : mutatedYOffset + areaHeight;
+    const getY1 = () => {
+      const y1 =
+        width >= height
+          ? mutatedYOffset + (item as IScaledValue).scaledValue / areaWidth
+          : mutatedYOffset + areaHeight;
 
-    const x1 =
-      width >= height
-        ? xOffset + areaWidth
-        : mutatedXOffset + (item as IScaledValue).scaledValue / areaHeight;
+      return y1 >= realRect.y1
+        ? realRect.y1
+        : y1 < realRect.y0
+        ? realRect.y0
+        : y1;
+    };
+
+    const getX1 = () => {
+      const x1 =
+        width >= height
+          ? xOffset + areaWidth
+          : mutatedXOffset + (item as IScaledValue).scaledValue / areaHeight;
+      return x1 >= realRect.x1
+        ? realRect.x1
+        : x1 < realRect.x0
+        ? realRect.x0
+        : x1;
+    };
+
+    const y1 = getY1();
+    const x1 = getX1();
 
     const rect: IMRect = {
-      x0: mutatedXOffset,
-      y0: mutatedYOffset,
+      x0:
+        mutatedXOffset >= realRect.x1
+          ? realRect.x1
+          : mutatedXOffset < realRect.x0
+          ? realRect.x0
+          : mutatedXOffset,
+      y0:
+        mutatedYOffset >= realRect.y1
+          ? realRect.y1
+          : mutatedYOffset < realRect.y0
+          ? realRect.y0
+          : mutatedYOffset,
       x1,
       y1,
     };

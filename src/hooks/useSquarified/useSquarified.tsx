@@ -55,7 +55,7 @@ export const getSquarified = <T,>(
 
   while (true) {
     if (tempSequence.length === 0) {
-      const newCoordinates = getCoordinates(currentRow, rect);
+      const newCoordinates = getCoordinates(currentRow, tempRect, rect);
       const newStack: (T & IScaledValue & IUnionCoordinates)[] =
         stack.concat(newCoordinates);
       return newStack;
@@ -71,11 +71,11 @@ export const getSquarified = <T,>(
       currentRow = newRow;
     } else {
       const sum = getSumBy(currentRow, "scaledValue");
-      const newContainer = getRemainArea(rect, sum);
-      const newCoordinates = getCoordinates(currentRow, rect);
+      const newContainer = getRemainArea(tempRect, sum);
+      const newCoordinates = getCoordinates(currentRow, tempRect, rect);
       const newStack = stack.concat(newCoordinates);
       currentRow = [];
-      rect = newContainer;
+      tempRect = newContainer;
       stack = newStack;
     }
   }

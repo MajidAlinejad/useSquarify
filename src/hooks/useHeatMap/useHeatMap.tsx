@@ -1,9 +1,6 @@
-import { RefObject, cloneElement, useEffect, useRef, useState } from "react";
+import { RefObject, useState } from "react";
 import { useSqurifiedHeatMap } from "../useSqurifiedHeatMap/useSqurifiedHeatMap";
-import { useHTMLElementSize } from "../useWindowSize/useWindowSize";
-import { useSquarified } from "../useSquarified/useSquarified";
 import { useGroupMap } from "../useGroupMap/useGroupMap";
-import { getCategories } from "../../functions/getCategories/getCategories";
 interface IuseHeatMap<T> {
   sequence: T[];
   ref: RefObject<HTMLElement>;
@@ -28,6 +25,7 @@ export const useHeatMap = <T,>({
     sequence,
     sizedByColName,
     ...rest,
+    topMargin: 35,
   });
 
   const categoriesMap = useGroupMap({

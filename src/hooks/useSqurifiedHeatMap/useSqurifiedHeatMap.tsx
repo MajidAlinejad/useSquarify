@@ -15,20 +15,23 @@ interface IUseSqurifiedHeatMap<T> {
   fullNameColName: string;
   heatColor?: IHeatColor;
   heatMultiply: number;
-  detailComponent: JSX.Element;
-  emptyComponent: JSX.Element;
+  detailComponent?: JSX.Element;
+  emptyComponent?: JSX.Element;
+  noDetail?: boolean;
+  topMargin?: number;
 }
 export const useSqurifiedHeatMap = <T,>({
   ref,
   sequence,
   performanceByColName,
-  fullNameColName,
   sizedByColName,
   symbolNameColName,
   heatColor = defaultHeatColor,
   heatMultiply,
   detailComponent,
   emptyComponent,
+  noDetail,
+  topMargin = 0,
 }: IUseSqurifiedHeatMap<T>) => {
   const [tochedTile, setTochedTile] = useState<number>();
   const [tochedTileDetail, setTochedTileDetail] = useState<T>();
@@ -56,14 +59,11 @@ export const useSqurifiedHeatMap = <T,>({
     }
   };
 
-  const handleMouseOverDetail = (
-    e: React.MouseEvent<HTMLDivElement, globalThis.MouseEvent>
-  ) => {
-    const mX = e.clientX;
-    const { width, right, left } = e.currentTarget.getBoundingClientRect();
-    const half = width / 2;
-    console.log(mX, left + half);
-  };
+  // const handleMouseOverDetail = (
+  //   e: React.MouseEvent<HTMLDivElement, globalThis.MouseEvent>
+  // ) => {
+
+  // };
   const hasTitle = (
     squarified: (T & IScaledValue & IUnionCoordinates)[],
     inx: number,
@@ -224,42 +224,50 @@ export const useSqurifiedHeatMap = <T,>({
         style={{
           textRendering: "optimizeLegibility",
           position: "absolute",
-          top: 35,
+          top: topMargin,
           left: 0,
         }}
         ref={canvas}
         width={x}
-        height={y - 35}
+        height={y - topMargin}
       />
 
-      <div
-        style={{
-          position: "absolute",
-          zIndex: sequence.length === 0 ? 3 : -99,
-          borderRadius: 10,
-          bottom: "50%",
-          left: "50%",
-          opacity: sequence.length === 0 ? 1 : 0,
-          transform: "translate(-50%,50%)",
-        }}
-      >
-        {emptyComponent}
-      </div>
-
-      <div
-        onMouseMove={(e) => handleMouseOverDetail(e)}
-        style={{
-          position: "absolute",
-          zIndex: tochedTileDetail ? 3 : -99,
-          borderRadius: 10,
-          bottom: 0,
-          left: "50%",
-          opacity: tochedTileDetail ? 1 : 0,
-          transform: "translate(-50%,-50%)",
-        }}
-      >
-        {cloneElement(detailComponent, { stock: tochedTileDetail })}
-      </div>
+      {!noDetail ? (
+        <>
+          <div
+            style={{
+              position: "absolute",
+              zIndex: sequence.length === 0 ? 3 : -99,
+              borderRadius: 10,
+              bottom: "50%",
+              left: "50%",
+              opacity: sequence.length === 0 ? 1 : 0,
+              transform: "translate(-50%,50%)",
+            }}
+          >
+            {emptyComponent}
+          </div>
+          <div
+            // onMouseMove={(e) => handleMouseOverDetail(e)}
+            style={{
+              position: "absolute",
+              zIndex: tochedTileDetail ? 3 : -99,
+              borderRadius: 10,
+              bottom: 0,
+              left: "50%",
+              opacity: tochedTileDetail ? 1 : 0,
+              transform: "translate(-50%,-50%)",
+            }}
+          >
+            {detailComponent &&
+              cloneElement(detailComponent, {
+                stock: tochedTileDetail,
+              })}
+          </div>
+        </>
+      ) : (
+        <></>
+      )}
     </>
   );
 };

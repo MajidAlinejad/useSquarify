@@ -12,7 +12,7 @@ import { useHeatMap } from "./hooks/useHeatMap/useHeatMap";
 function App() {
   const data = getData();
   const [heatMultiply, setHeatMultiply] = useState(MULTIPLIER[4]);
-  const [performance, setPerformance] = useState(DEFAULT_PERFORMANCE[0]);
+  const [performance, setPerformance] = useState(DEFAULT_PERFORMANCE[3]);
   const [filterPerformance, setFilterPerformance] = useState<number[]>([]);
   const [sizeBy, setSizeBy] = useState(DEFAULT_SIZE[0]);
   const [dataSequence, setDataSequence] = useState<typeof data>(data);
