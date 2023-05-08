@@ -248,14 +248,13 @@ export const useSqurifiedHeatMap = <T,>({
             {emptyComponent}
           </div>
           <div
-            // onMouseMove={(e) => handleMouseOverDetail(e)}
             style={{
-              position: "absolute",
               zIndex: tochedTileDetail ? 3 : -99,
+              opacity: tochedTileDetail ? 1 : 0,
+              position: "absolute",
               borderRadius: 10,
               bottom: 0,
               left: "50%",
-              opacity: tochedTileDetail ? 1 : 0,
               transform: "translate(-50%,-50%)",
             }}
           >

@@ -21,12 +21,6 @@ export const useHeatMap = <T,>({
   ...rest
 }: IuseHeatMap<T>): React.ReactNode => {
   const [category, setCategory] = useState<string>("");
-  const sw = useSqurifiedHeatMap({
-    sequence,
-    sizedByColName,
-    ...rest,
-    topMargin: 35,
-  });
 
   const categoriesMap = useGroupMap({
     groupColName,

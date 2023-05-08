@@ -50,7 +50,7 @@ function App() {
 
   const Empty = () => {
     return (
-      <div className="flex flex-col gap-1 items-center opacity-70 text-slate-500">
+      <div className="flex flex-col gap-1 items-center opacity-70 text-slate-500 h-full justify-center">
         <VscEmptyWindow className="text-9xl" />
         <span>No data match your criteria</span>
       </div>

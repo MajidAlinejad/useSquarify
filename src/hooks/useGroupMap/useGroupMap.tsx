@@ -23,6 +23,7 @@ export const useGroupMap = <T,>({
   sequence,
   sizedByColName,
   groupColName,
+  emptyComponent,
   ...rest
 }: IuseGroupMap<T>) => {
   const [x, y] = useHTMLElementSize(ref.current);
@@ -40,34 +41,44 @@ export const useGroupMap = <T,>({
           position: "relative",
           width: x,
           height: y,
-          background: "#ffeeff",
         }}
       >
-        {squarified.map((gTile) => {
-          const gSequence = sequence.filter(
-            (item) => (item as any)[groupColName] === (gTile as any)["title"]
-          );
-          console.log(gSequence);
-          const rect = getCanvasRect(gTile.rect);
-          return (
-            <div
-              style={{
-                position: "absolute",
-                width: rect.w,
-                height: rect.h,
-                left: rect.x,
-                top: rect.y,
-                border: "2px solid black",
-              }}
-            >
-              <Tile
-                {...rest}
-                sequence={gSequence}
-                sizedByColName={sizedByColName}
-              />
-            </div>
-          );
-        })}
+        {squarified.length
+          ? squarified.map((gTile, inx) => {
+              const rect = getCanvasRect(gTile.rect);
+              const gName = (gTile as any)["title"];
+              console.log(gName, rect.x + rect.w, x);
+              if (
+                rect.x + Math.abs(rect.w) > x ||
+                rect.y + Math.abs(rect.h) > y
+              ) {
+                return <></>;
+              }
+              const gSequence = sequence.filter(
+                (item) => (item as any)[groupColName] === gName
+              );
+              return (
+                <div
+                  key={inx}
+                  style={{
+                    position: "absolute",
+                    width: rect.w - 2,
+                    height: rect.h - 2,
+                    left: rect.x + 1,
+                    top: rect.y + 1,
+                  }}
+                >
+                  <Tile
+                    {...rest}
+                    emptyComponent={emptyComponent}
+                    groupTitle={gName}
+                    sequence={gSequence}
+                    sizedByColName={sizedByColName}
+                  />
+                </div>
+              );
+            })
+          : emptyComponent}
       </div>
     </>
   );

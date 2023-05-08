@@ -1,8 +1,10 @@
 import { RefObject, cloneElement, useEffect, useRef, useState } from "react";
 import { FC } from "react";
 import { useSqurifiedHeatMap } from "../../hooks/useSqurifiedHeatMap/useSqurifiedHeatMap";
+import { useStyles } from "../../style/jss";
 
 interface ITileType<T> {
+  groupTitle: string;
   sequence: T[];
   sizedByColName: string;
   performanceByColName: string;
@@ -14,9 +16,9 @@ interface ITileType<T> {
   emptyComponent: JSX.Element;
 }
 
-const Tile = <T,>(props: ITileType<T>) => {
+const Tile = <T,>({ groupTitle, ...props }: ITileType<T>) => {
   const container = useRef<HTMLDivElement>(null);
-
+  const classes = useStyles();
   const sw = useSqurifiedHeatMap({
     ...props,
     ref: container,
@@ -29,7 +31,8 @@ const Tile = <T,>(props: ITileType<T>) => {
   ) => {};
 
   return (
-    <div ref={container} style={{ width: "100%", height: "100%" }}>
+    <div ref={container} className={classes.groupWrapper}>
+      <div className={classes.groupHeader}>{groupTitle}</div>
       {sw}
     </div>
   );
