@@ -7,6 +7,12 @@ interface IMRect {
   x1: number;
   y1: number;
 }
+interface ICRect {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+}
 
 //human vision rectangle
 interface IHRect {
@@ -14,4 +20,14 @@ interface IHRect {
   yOffset: number;
   height: number;
   width: number;
+}
+
+interface IHeatColor {
+  positiveThree: string;
+  positiveTwo: string;
+  positiveOne: string;
+  zero: string;
+  negativOne: string;
+  negativTwo: string;
+  negativThree: string;
 }

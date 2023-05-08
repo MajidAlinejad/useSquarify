@@ -13,7 +13,8 @@ import { useHTMLElementSize } from "../useWindowSize/useWindowSize";
 export const useSquarified = <T,>(
   sequence: T[],
   ref: RefObject<HTMLElement>,
-  index: string
+  index: string,
+  telorance?: number
 ) => {
   const [x, y] = useHTMLElementSize(ref.current);
   const [squarified, setSquarified] = useState<
@@ -32,10 +33,11 @@ export const useSquarified = <T,>(
         x1: x - 2,
         y1: y - 2,
       },
-      index
+      index,
+      telorance
     );
     setSquarified(sqr);
-  }, [x, y, index]);
+  }, [x, y, index, sequence]);
 
   return squarified;
 };
@@ -43,7 +45,8 @@ export const useSquarified = <T,>(
 export const getSquarified = <T,>(
   sequence: T[],
   rect: IMRect,
-  index: string
+  index: string,
+  telorance?: number
 ): (T & IScaledValue & IUnionCoordinates)[] => {
   let currentRow: (T & IScaledValue)[] = [];
   let tempSequence = getScaledSequenceBy(sequence, rect.y1 * rect.x1, index);
@@ -60,7 +63,9 @@ export const getSquarified = <T,>(
 
     const currentArea = tempSequence[0];
     const restData = tempSequence.slice(1, tempSequence.length);
-    if (isAspectRatioImproved(currentRow, tempRect, tempSequence)[0]) {
+    if (
+      isAspectRatioImproved(currentRow, tempRect, tempSequence, telorance)[0]
+    ) {
       const newRow = currentRow.concat(currentArea);
       tempSequence = restData;
       currentRow = newRow;

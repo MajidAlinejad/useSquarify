@@ -4,7 +4,8 @@ import { getShortestSide } from "../getShortestSide/getShortestSide";
 export const isAspectRatioImproved = <T,>(
   rowSequence: T[],
   mathRect: IMRect,
-  slicedSequence: (T & IScaledValue)[]
+  slicedSequence: (T & IScaledValue)[],
+  telorance: number = 50
 ) => {
   if (rowSequence && rowSequence.length === 0 && slicedSequence.length) {
     return [Infinity, -Infinity];
@@ -13,10 +14,12 @@ export const isAspectRatioImproved = <T,>(
   const shortestSide = getShortestSide(mathRect);
   const currentMaxAspectRatio = getMaxAspectRatio(rowSequence, shortestSide);
   const newMaxAspectRatio = getMaxAspectRatio(newRow, shortestSide);
+  const flag =
+    currentMaxAspectRatio >=
+    newMaxAspectRatio + (newRow.length + telorance) / slicedSequence.length;
 
   return [
-    currentMaxAspectRatio >=
-      newMaxAspectRatio + (newRow.length + 90) / slicedSequence.length,
+    slicedSequence.length < 6 ? false : flag,
     { currentMaxAspectRatio, newMaxAspectRatio },
   ];
 };
