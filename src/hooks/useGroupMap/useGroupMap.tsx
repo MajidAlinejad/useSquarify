@@ -47,7 +47,6 @@ export const useGroupMap = <T,>({
           ? squarified.map((gTile, inx) => {
               const rect = getCanvasRect(gTile.rect);
               const gName = (gTile as any)["title"];
-              console.log(gName, rect.x + rect.w, x);
               if (
                 rect.x + Math.abs(rect.w) > x ||
                 rect.y + Math.abs(rect.h) > y

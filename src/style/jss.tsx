@@ -20,4 +20,15 @@ export const useStyles = createUseStyles({
     userSelect: "none",
     cursor: "pointer",
   },
+
+  groupNav: {
+    width: "100%",
+    height: "35px",
+    display: "flex",
+    justifyItems: "start",
+    alignItems: "center",
+    gap: 2,
+    padding: "2px 6px",
+    background: "white",
+  },
 });
