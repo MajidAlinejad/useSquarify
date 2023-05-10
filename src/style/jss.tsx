@@ -30,5 +30,12 @@ export const useStyles = createUseStyles({
     gap: 2,
     padding: "2px 6px",
     background: "white",
+    fontSize: "14px",
+    fontWeight: "500",
+    "& button": {
+      "&:hover": {
+        color: "#3ebced",
+      },
+    },
   },
 });

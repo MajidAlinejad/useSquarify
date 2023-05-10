@@ -21,11 +21,12 @@ const Tile = <T,>({ groupTitle, ...props }: ITileType<T>) => {
   const container = useRef<HTMLDivElement>(null);
   const [category, setCategory] = useLocalStorage<string>("category", "");
   const classes = useStyles();
+
   const sw = useSqurifiedHeatMap({
     ...props,
     ref: container,
-    noDetail: true,
     topMargin: 20,
+    detail: "Fixed",
   });
 
   const handleClickOnHeader = (name: string) => {

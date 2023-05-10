@@ -39,6 +39,7 @@ export const useGroupMap = <T,>({
       <div
         style={{
           position: "relative",
+          overflow: "hidden",
           width: x,
           height: y,
         }}

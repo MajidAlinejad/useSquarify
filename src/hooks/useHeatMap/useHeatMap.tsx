@@ -32,6 +32,7 @@ export const useHeatMap = <T,>({
     sequence: selectedSequence,
     sizedByColName,
     topMargin: 33,
+    telorance: 20,
   });
 
   const categoriesMap = useGroupMap({
@@ -52,7 +53,15 @@ export const useHeatMap = <T,>({
 
   return (
     <>
-      <div style={{ position: "absolute", zIndex: 2 }}>{categoriesMap}</div>
+      <div
+        style={{
+          position: "absolute",
+          zIndex: !category ? 2 : -1,
+          opacity: !category ? 1 : 0,
+        }}
+      >
+        {categoriesMap}
+      </div>
       <div
         style={{
           position: "absolute",
@@ -63,10 +72,11 @@ export const useHeatMap = <T,>({
         }}
       >
         <div className={classes.groupNav}>
-          <button onClick={() => setCategory("")}>
-            All <span style={{ fontSize: "20px" }}>›</span>
-          </button>
-          <span className=" text-sm font-bold">{category}</span>
+          <button onClick={() => setCategory("")}>All</button>
+          <span style={{ fontSize: "25px", lineHeight: 0, marginTop: "-5px" }}>
+            ›
+          </span>
+          <span style={{ fontWeight: "bold" }}>{category}</span>
         </div>
         {sw}
       </div>

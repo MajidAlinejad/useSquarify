@@ -19,6 +19,8 @@ interface IUseSqurifiedHeatMap<T> {
   emptyComponent?: JSX.Element;
   noDetail?: boolean;
   topMargin?: number;
+  detail?: "Fixed";
+  telorance?: number;
 }
 export const useSqurifiedHeatMap = <T,>({
   ref,
@@ -32,13 +34,15 @@ export const useSqurifiedHeatMap = <T,>({
   emptyComponent,
   noDetail,
   topMargin = 0,
+  detail,
+  telorance,
 }: IUseSqurifiedHeatMap<T>) => {
   const [tochedTile, setTochedTile] = useState<number>();
   const [tochedTileDetail, setTochedTileDetail] = useState<T>();
   const [x, y] = useHTMLElementSize(ref.current);
   const canvas = useRef<HTMLCanvasElement>(null);
   const ctx = canvas.current?.getContext("2d");
-  const squarified = useSquarified(sequence, ref, sizedByColName);
+  const squarified = useSquarified(sequence, ref, sizedByColName, telorance);
 
   const handleMouseOver = (
     e: React.MouseEvent<HTMLCanvasElement, globalThis.MouseEvent>
@@ -248,15 +252,27 @@ export const useSqurifiedHeatMap = <T,>({
             {emptyComponent}
           </div>
           <div
-            style={{
-              zIndex: tochedTileDetail ? 3 : -99,
-              opacity: tochedTileDetail ? 1 : 0,
-              position: "absolute",
-              borderRadius: 10,
-              bottom: 0,
-              left: "50%",
-              transform: "translate(-50%,-50%)",
-            }}
+            style={
+              detail === "Fixed"
+                ? {
+                    zIndex: tochedTileDetail ? 10 : -99,
+                    opacity: tochedTileDetail ? 1 : 0,
+                    position: "fixed",
+                    borderRadius: 10,
+                    bottom: 0,
+                    left: "50%",
+                    transform: "translate(-50%,-30%)",
+                  }
+                : {
+                    zIndex: tochedTileDetail ? 3 : -99,
+                    opacity: tochedTileDetail ? 1 : 0,
+                    position: "absolute",
+                    borderRadius: 10,
+                    bottom: 0,
+                    left: "50%",
+                    transform: "translate(-50%,-50%)",
+                  }
+            }
           >
             {detailComponent &&
               cloneElement(detailComponent, {
